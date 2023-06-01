@@ -1,0 +1,15 @@
+{
+  "processors": [
+    "stylelint-processor-styled-components"
+  ],
+  "plugins": [
+    ""
+  ],
+  "rules": {
+    "color-no-invalid-hex": true
+  },
+  "extends": [
+    "stylelint-config-standard",
+    "stylelint-config-styled-components"
+  ]
+}
