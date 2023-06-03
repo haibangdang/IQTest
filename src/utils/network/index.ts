@@ -4,6 +4,9 @@ import axios, { AxiosRequestConfig } from 'axios';
 export const axiosConfig: AxiosRequestConfig = {
   baseURL: process.env.NEXT_PUBLIC_API_ENDPOINT,
   timeout: 40000,
+  headers: {
+    'Content-Type': 'application/json',
+  },
 };
 
 const apiServices: AxiosInstance = axios.create(axiosConfig);

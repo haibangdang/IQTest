@@ -11,11 +11,20 @@ import { useAppDispatch } from '../../store/hook';
 // saga
 import { requestBaseRequest } from '../../store/reducers/baseRequest/baseRequest.slice';
 import { selectBaseRequest } from '@/store/reducers/baseRequest/baseRequest.selector';
+import { requestLogin } from '@/store/reducers/login/login.slice';
 
 const HomePage: FC = () => {
   const dispatch = useAppDispatch();
   useEffect(() => {
     dispatch(requestBaseRequest());
+    dispatch(
+      requestLogin({
+        jsonData: {
+          email: 'danghai.bang@gmail.com',
+          password: '123',
+        },
+      }),
+    );
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
