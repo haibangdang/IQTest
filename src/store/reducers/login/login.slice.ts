@@ -1,5 +1,6 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { initialState } from './login.initialState';
+import { LoginPayload } from './login.types';
 
 const loginSlice = createSlice({
   name: 'login',
@@ -8,10 +9,9 @@ const loginSlice = createSlice({
     requestLogin(
       state,
       {}: PayloadAction<{
-        jsonData: any;
+        jsonData: LoginPayload;
       }>,
     ) {
-      console.log('requestLogin run');
       state.error = null;
       state.isFetching = true;
     },
@@ -23,7 +23,6 @@ const loginSlice = createSlice({
     },
 
     requestLoginFailed(state, { payload }) {
-      console.log('error', payload);
       const { error } = payload;
       state.error = error;
       state.isFetching = false;

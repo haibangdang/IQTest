@@ -1,6 +1,7 @@
 import { AxiosInstance, AxiosResponse } from 'axios';
 import axios, { AxiosRequestConfig } from 'axios';
 
+// headers nếu ở dạng JSON thì cần 'Content-Type': 'application/json', còn form-data thì ko cần khai báo header
 export const axiosConfig: AxiosRequestConfig = {
   baseURL: process.env.NEXT_PUBLIC_API_ENDPOINT,
   timeout: 40000,

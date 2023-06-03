@@ -5,11 +5,13 @@ import rootSaga from './rootSaga';
 // add reducers here
 import baseRequestReducer from './reducers/baseRequest/baseRequest.slice';
 import loginReducer from './reducers/login/login.slice';
+import signupReducer from './reducers/signup/signup.slice';
 
 const sagaMiddleware = createSagaMiddleware();
 const rootReducer = combineReducers({
   baseRequest: baseRequestReducer,
   login: loginReducer,
+  signup: signupReducer,
 });
 
 export const store = configureStore({

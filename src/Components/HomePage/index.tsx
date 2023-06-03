@@ -12,6 +12,7 @@ import { useAppDispatch } from '../../store/hook';
 import { requestBaseRequest } from '../../store/reducers/baseRequest/baseRequest.slice';
 import { selectBaseRequest } from '@/store/reducers/baseRequest/baseRequest.selector';
 import { requestLogin } from '@/store/reducers/login/login.slice';
+import { requestSignup } from '@/store/reducers/signup/signup.slice';
 
 const HomePage: FC = () => {
   const dispatch = useAppDispatch();
@@ -20,6 +21,15 @@ const HomePage: FC = () => {
     dispatch(
       requestLogin({
         jsonData: {
+          email: 'danghai.bang@gmail.com',
+          password: '123',
+        },
+      }),
+    );
+    dispatch(
+      requestSignup({
+        jsonData: {
+          userName: 'danghai.bang',
           email: 'danghai.bang@gmail.com',
           password: '123',
         },

@@ -6,11 +6,12 @@ import {
   requestLoginFailed,
   requestLoginSuccessful,
 } from './login.slice';
+import { LoginPayload } from './login.types';
 
 export function* requestLoginExecute({
   payload,
 }: PayloadAction<{
-  jsonData: any;
+  jsonData: LoginPayload;
 }>) {
   const { jsonData } = payload;
   try {
