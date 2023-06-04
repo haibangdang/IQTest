@@ -7,7 +7,7 @@ import {
   requestSignupSuccessful,
 } from './signup.slice';
 
-export function* requestSignupExecute({
+export function* requestSignupSaga({
   payload,
 }: PayloadAction<{
   jsonData: any;
@@ -15,7 +15,7 @@ export function* requestSignupExecute({
   const { jsonData } = payload;
   try {
     // @ts-ignore
-    const login = yield call(signupApi.requestLoginExecute, jsonData);
+    const login = yield call(signupApi.requestSignup, jsonData);
     yield put(requestSignupSuccessful(login));
   } catch (e) {
     console.log('request singup failed : ', e);
@@ -23,6 +23,6 @@ export function* requestSignupExecute({
   }
 }
 
-export default function* storeSaga() {
-  yield takeLatest(requestSignup, requestSignupExecute);
+export default function* signupSaga() {
+  yield takeLatest(requestSignup, requestSignupSaga);
 }
