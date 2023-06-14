@@ -1,8 +1,7 @@
 // libs
-import type { FC } from 'react';
+import { useEffect, type FC } from 'react';
 import Image from 'next/image';
-import { Button, InputGroup, Form } from 'react-bootstrap';
-
+import { Button, Checkbox, Form, Input } from 'antd';
 // styled-components
 import {
   LoginPageWrapper,
@@ -11,45 +10,97 @@ import {
 } from './LoginPage.styled';
 // others
 import { bg } from '../../../public/assets';
+import { requestLogin } from '@/store/reducers/login/login.slice';
+import { useAppDispatch } from '@/store/hook';
 
 const LoginPage: FC = () => {
+  const dispatch = useAppDispatch();
+  useEffect(() => {
+    if (localStorage.getItem('loginData')) {
+      // const data = JSON.parse(localStorage.data);
+      // fill out the form
+      console.log(localStorage.data);
+    }
+  }, []);
+
+  const onFinish = (values: any) => {
+    console.log('Received values of form: ', values);
+    dispatch(
+      requestLogin({
+        jsonData: values,
+      }),
+    );
+    localStorage.setItem(
+      'loginData',
+      JSON.stringify({
+        // Form data
+        email: values.email,
+        password: values.password,
+      }),
+    );
+    console.log(localStorage.getItem('loginData'));
+  };
   return (
     <LoginPageWrapper>
       <div className="row mx-0">
-        <LeftSection className="col-6 mb-5">
-          <div className="d-flex flex-column ms-5">
-            <div className="text-center">
-              <img
-                src="https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-login-form/lotus.webp"
-                style={{ width: '185px' }}
-                alt="logo"
-              />
-              <h4 className="mt-1 mb-5 pb-1">We are The Lotus Team</h4>
-            </div>
+        <LeftSection className="col-6">
+          <Form
+            name="normal_login"
+            className="login-form"
+            initialValues={{ remember: true }}
+            onFinish={onFinish}
+          >
+            <Form.Item
+              name="email"
+              label="E-mail"
+              rules={[
+                {
+                  type: 'email',
+                  message: 'The input is not valid E-mail!',
+                },
+                {
+                  required: true,
+                  message: 'Please input your E-mail!',
+                },
+              ]}
+            >
+              <Input />
+            </Form.Item>
+            <Form.Item
+              name="password"
+              label="Password"
+              rules={[
+                {
+                  required: true,
+                  message: 'Please input your password!',
+                },
+              ]}
+              hasFeedback
+            >
+              <Input.Password />
+            </Form.Item>
+            <Form.Item>
+              <Form.Item name="remember" valuePropName="checked" noStyle>
+                <Checkbox>Remember me</Checkbox>
+              </Form.Item>
 
-            <InputGroup className="mb-3">
-              <InputGroup.Text id="basic-addon1">@</InputGroup.Text>
-              <Form.Control
-                placeholder="Username"
-                aria-label="Username"
-                aria-describedby="basic-addon1"
-              />
-            </InputGroup>
-
-            <div className="text-center pt-1 mb-5 pb-1">
-              <Button className="mb-4 w-100 gradient-custom-2">Sign in</Button>
-              <a className="text-muted" href="#!">
-                Forgot password?
+              <a className="login-form-forgot" href="">
+                Forgot password
               </a>
-            </div>
+            </Form.Item>
 
-            <div className="d-flex flex-row align-items-center justify-content-center pb-4 mb-4">
-              <p className="mb-0">Don't have an account?</p>
-              <Button className="mx-2" color="danger">
-                Danger
+            <Form.Item>
+              <Button
+                type="primary"
+                htmlType="submit"
+                className="login-form-button"
+                // onClick={handleSubmit}
+              >
+                Log in
               </Button>
-            </div>
-          </div>
+              Or <a href="">register now!</a>
+            </Form.Item>
+          </Form>
         </LeftSection>
 
         <RightSection className="col-6 mb-5">

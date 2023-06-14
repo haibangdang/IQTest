@@ -1,76 +1,174 @@
-// libs
-import type { FC } from 'react';
-import { Button, Form, InputGroup, Row } from 'react-bootstrap';
-import * as formik from 'formik';
-import * as Yup from 'yup';
+import { Button, Form, Input, Select, DatePicker } from 'antd';
+import React from 'react';
+import type { DatePickerProps } from 'antd';
 // styled-components
-import { SignupPageWrapper, SignupForm } from './SignupPage.styled';
+import { SignupPageWrapper, SignupForm, Login } from './SignupPage.styled';
+// Components
+// import CustomButton from 'src/Components/Shared/CustomButton';
 // others
+import { requestSignup } from '@/store/reducers/signup/signup.slice';
+import { useAppDispatch } from '@/store/hook';
 
-const SignupPage: FC = () => {
-  const { Formik } = formik;
+const { Option } = Select;
+const formItemLayout = {
+  labelCol: {
+    xs: { span: 24 },
+    sm: { span: 8 },
+  },
+  wrapperCol: {
+    xs: { span: 24 },
+    sm: { span: 16 },
+  },
+};
+const tailFormItemLayout = {
+  wrapperCol: {
+    xs: {
+      span: 24,
+      offset: 0,
+    },
+    sm: {
+      span: 16,
+      offset: 8,
+    },
+  },
+};
 
-  const SignupSchema = Yup.object().shape({
-    name: Yup.string()
-      .min(2, 'Too Short!')
-      .max(50, 'Too Long!')
-      .required('Required'),
-    email: Yup.string().email('Invalid email').required('Required'),
-  });
+const dateFormat = 'YYYY/MM/DD';
+
+const onChange: DatePickerProps['onChange'] = (date, dateString) => {
+  console.log(date, dateString);
+};
+const SignupPage: React.FC = () => {
+  const dispatch = useAppDispatch();
+
+  const [form] = Form.useForm();
+
+  const onFinish = (values: any) => {
+    console.log('Received values of form: ', values);
+    dispatch(
+      requestSignup({
+        jsonData: {
+          dob: '2019-05-29T03:42:00.817Z',
+          email: 'taikool2121996@gmail.com',
+          gender: 'female',
+          name: 'aaaa',
+          password: 'đââsdsa',
+          repassword: 'đââsdsa',
+        },
+      }),
+    );
+  };
+
   return (
-    <SignupPageWrapper className="d-flex justify-content-center">
-      <SignupForm className="my-5">
-        <Formik
-          validationSchema={SignupSchema}
-          initialValues={{
-            name: '',
-            email: '',
-          }}
-          onSubmit={(values) => {
-            // same shape as initial values
-            console.log(values);
-          }}
+    <SignupPageWrapper className="d-flex flex-column align-items-center mt-5">
+      <SignupForm>
+        <Form
+          {...formItemLayout}
+          form={form}
+          name="register"
+          onFinish={onFinish}
+          style={{ maxWidth: 600 }}
+          scrollToFirstError
         >
-          {({ handleSubmit, handleChange, values, touched, errors }) => (
-            <Form noValidate onSubmit={handleSubmit}>
-              <Row className="mb-3">
-                <Form.Group
-                  controlId="validationFormik102"
-                  className="position-relative"
-                >
-                  <Form.Label>Name</Form.Label>
-                  <Form.Control
-                    type="text"
-                    name="name"
-                    value={values.name}
-                    onChange={handleChange}
-                    isValid={touched.name && !errors.name}
-                  />
-                  <Form.Control.Feedback tooltip>
-                    Looks good!
-                  </Form.Control.Feedback>
-                </Form.Group>
-                <Form.Group controlId="validationFormikUsername2">
-                  <Form.Label>Email</Form.Label>
-                  <InputGroup hasValidation>
-                    <Form.Control
-                      type="email"
-                      name="email"
-                      value={values.email}
-                      onChange={handleChange}
-                      isValid={touched.email && !errors.email}
-                    />
-                    <Form.Control.Feedback type="invalid" tooltip>
-                      {errors.email}
-                    </Form.Control.Feedback>
-                  </InputGroup>
-                </Form.Group>
-              </Row>
-              <Button type="submit">Submit form</Button>
-            </Form>
-          )}
-        </Formik>
+          <Form.Item
+            name="name"
+            label="Name"
+            rules={[
+              {
+                required: true,
+                message: 'Please input your name!',
+                whitespace: true,
+              },
+            ]}
+          >
+            <Input />
+          </Form.Item>
+
+          <Form.Item
+            name="email"
+            label="E-mail"
+            rules={[
+              {
+                type: 'email',
+                message: 'The input is not valid E-mail!',
+              },
+              {
+                required: true,
+                message: 'Please input your E-mail!',
+              },
+            ]}
+          >
+            <Input />
+          </Form.Item>
+
+          <Form.Item
+            name="gender"
+            label="Gender"
+            rules={[{ required: true, message: 'Please select gender!' }]}
+          >
+            <Select placeholder="select your gender">
+              <Option value="male">Male</Option>
+              <Option value="female">Female</Option>
+              <Option value="other">Other</Option>
+            </Select>
+          </Form.Item>
+
+          <Form.Item name="dob" label="Enter your DOB">
+            <DatePicker onChange={onChange} format={dateFormat} />
+          </Form.Item>
+
+          <Form.Item
+            name="password"
+            label="Password"
+            rules={[
+              {
+                required: true,
+                message: 'Please input your password!',
+              },
+            ]}
+            hasFeedback
+          >
+            <Input.Password />
+          </Form.Item>
+
+          <Form.Item
+            name="re-password"
+            label="Re-Password"
+            dependencies={['password']}
+            hasFeedback
+            rules={[
+              {
+                required: true,
+                message: 'Please confirm your password!',
+              },
+              ({ getFieldValue }) => ({
+                validator(_, value) {
+                  if (!value || getFieldValue('password') === value) {
+                    return Promise.resolve();
+                  }
+                  return Promise.reject(
+                    new Error(
+                      'The new password that you entered do not match!',
+                    ),
+                  );
+                },
+              }),
+            ]}
+          >
+            <Input.Password />
+          </Form.Item>
+
+          <Form.Item {...tailFormItemLayout}>
+            <Button type="primary" htmlType="submit">
+              Get Stared
+            </Button>
+          </Form.Item>
+        </Form>
       </SignupForm>
+
+      <Login>
+        <p>Already have an account ? Login</p>
+      </Login>
     </SignupPageWrapper>
   );
 };

@@ -3,6 +3,6 @@ import styled from 'styled-components';
 
 export const SignupPageWrapper = styled.div``;
 
-export const SignupForm = styled.div`
-  width: 30%;
-`;
+export const SignupForm = styled.div``;
+
+export const Login = styled.div``;

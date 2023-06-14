@@ -15,8 +15,8 @@ export function* requestSignupSaga({
   const { jsonData } = payload;
   try {
     // @ts-ignore
-    const login = yield call(signupApi.requestSignup, jsonData);
-    yield put(requestSignupSuccessful(login));
+    const signup = yield call(signupApi.requestSignup, jsonData);
+    yield put(requestSignupSuccessful(signup));
   } catch (e) {
     console.log('request singup failed : ', e);
     yield put(requestSignupFailed(e));
