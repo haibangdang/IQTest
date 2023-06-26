@@ -60,7 +60,7 @@ const HomePage: FC = () => {
 
   return (
     <HomePageWrapper>
-      <h1 className="text-3xl font-bold underline">Hello world!</h1>
+      {/* <h1 className="text-3xl font-bold underline">Hello world!</h1> */}
       <CustomHeader />
 
       <SearchBarSection className="d-flex justify-content-center mt-3">
